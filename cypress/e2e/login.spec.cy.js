@@ -1,29 +1,44 @@
+import userData from '../fixtures/userData.json'
+
+
 describe('Orange HRM Login', () => {
 
 const selectorList = {
-  usernameField: '[name="username"]',
-  passwordField: '[name="password"]',
-  loginButton: '[type="submit"]',
-  sectionTitle: '.oxd-topbar-header-breadcrumb-module',
-  wrongCredencialAlert: '[role="alert"]'
+  usernameField:    '[name="username"]',
+  passwordField:    '[name="password"]',
+  loginButton:      '[type="submit"]',
+  sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
+  dashboardGrid:    '.orangehrm-dashboard-grid',
+  credencialAlert:  '[role="alert"]'
 }
-
-
+/*
+Tratamento Cypress Fixtures
+const userData = {
+  userSuccess:{
+    username: 'Admin',
+    password: 'admin123'
+  },
+  userFail:{
+    username: 'teste',
+    password: 'teste'
+  }
+}
+*/
   it('login - Success', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(selectorList.usernameField).type('Admin')
-    cy.get(selectorList.passwordField).type('admin123')
+    cy.get(selectorList.usernameField).type(userData.userSuccess.username)
+    cy.get(selectorList.passwordField).type(userData.userSuccess.password)
     cy.get(selectorList.loginButton).click()
     //verificar se a url esta posicionada na pagina principal
     cy.location('pathname').should('equal','/web/index.php/dashboard/index')
     //alternativa de verificacao de posicionamento do cypress utilizando elemento da pagina principal
-    cy.get(selectorList.sectionTitle)
+    cy.get(selectorList.dashboardGrid)
   })
   it('login - Fail', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(selectorList.usernameField).type('Test')
-    cy.get(selectorList.passwordField).type('Test')
+    cy.get(selectorList.usernameField).type(userData.userFail.username)
+    cy.get(selectorList.passwordField).type(userData.userFail.password)
     cy.get(selectorList.loginButton).click()
-    cy.get(selectorList.wrongCredencialAlert)
+    cy.get(selectorList.credencialAlert)
   })
 })
