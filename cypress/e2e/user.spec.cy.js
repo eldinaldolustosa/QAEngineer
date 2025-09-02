@@ -9,7 +9,17 @@ const selectorList = {
   loginButton:      '[type="submit"]',
   sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
   dashboardGrid:    '.orangehrm-dashboard-grid',
-  credencialAlert:  '[role="alert"]'
+  credencialAlert:  '[role="alert"]',
+  myInfoButton:     '[href="/web/index.php/pim/viewMyDetails"]',
+  firstNameField:   '[name="firstName"]',
+  lasNameField:     '[name="lastName"]',
+  genericField:     '.oxd-input--active',
+  dataField:        '[placeholder="yyyy-mm-dd]',
+  dateCloseButton:  '.--close',
+  selectTextInput:  '.oxd-select-text-input',
+  radioGender:      '[type="radio"]',
+  submitButton:     '[type="submit"]'
+
 }
 /*
 Tratamento Cypress Fixtures
@@ -24,7 +34,7 @@ const userData = {
   }
 }
 */
-  it('login - Success', () => {
+  it.only('User Info Update - Success', () => {
     cy.visit('/auth/login') //otimizado a URL basica do projeto no arquivo cypress.config.js que inicializa o Cypress
     cy.get(selectorList.usernameField).type(userData.userSuccess.username)
     cy.get(selectorList.passwordField).type(userData.userSuccess.password)
@@ -33,6 +43,18 @@ const userData = {
     cy.location('pathname').should('equal','/web/index.php/dashboard/index')
     //alternativa de verificacao de posicionamento do cypress utilizando elemento da pagina principal
     cy.get(selectorList.dashboardGrid)
+    cy.get(selectorList.myInfoButton).click()
+    cy.get(selectorList.firstNameField)
+    cy.get(selectorList.lasNameField)
+    cy.get(selectorList.genericField).eq(4).clear().type('IdEmployee')
+    cy.get(selectorList.genericField).eq(5).clear().type('DLTeste')
+    cy.get(selectorList.genericField).eq(7).clear().type('2025-01-09')
+    cy.get(selectorList.dateCloseButton).click()
+    //cy.get(selectorList.radioGender).eq(1).check()
+    //cy.get(selectorList.selectTextInput).clear().type('Brazilian')
+    cy.get(selectorList.submitButton).eq(0).click()
+    cy.get('body').should('contain', 'Successfully Updated')
+    cy.get('.oxd-toast-close')
   })
   it('login - Fail', () => {
     cy.visit('/auth/login')
