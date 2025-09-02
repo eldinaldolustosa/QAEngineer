@@ -18,7 +18,8 @@ const selectorList = {
   dateCloseButton:  '.--close',
   selectTextInput:  '.oxd-select-text-input',
   radioGender:      '[type="radio"]',
-  submitButton:     '[type="submit"]'
+  submitButton:     '[type="submit"]',
+  genericComboBox:  '.oxd-select-text--arrow'
 
 }
 /*
@@ -44,14 +45,20 @@ const userData = {
     //alternativa de verificacao de posicionamento do cypress utilizando elemento da pagina principal
     cy.get(selectorList.dashboardGrid)
     cy.get(selectorList.myInfoButton).click()
-    cy.get(selectorList.firstNameField)
-    cy.get(selectorList.lasNameField)
+    cy.get(selectorList.firstNameField).clear().type('Eddie')
+    cy.get(selectorList.lasNameField).clear().type('Santos')
     cy.get(selectorList.genericField).eq(4).clear().type('IdEmployee')
     cy.get(selectorList.genericField).eq(5).clear().type('DLTeste')
     cy.get(selectorList.genericField).eq(7).clear().type('2025-01-09')
     cy.get(selectorList.dateCloseButton).click()
     //cy.get(selectorList.radioGender).eq(1).check()
-    //cy.get(selectorList.selectTextInput).clear().type('Brazilian')
+    cy.get(':nth-child(2) > :nth-child(2) > .oxd-radio-wrapper > label > .oxd-radio-input').click()
+    cy.get(selectorList.genericComboBox).eq(0).click({force: true})
+    cy.get('.oxd-select-dropdown > :nth-child(27)').click()
+    cy.get(selectorList.genericComboBox).eq(1).click({force: true})
+    cy.get('.oxd-select-dropdown > :nth-child(3').click()
+    cy.get(selectorList.genericComboBox).eq(2).click({force: true})
+    cy.get('.oxd-select-dropdown > :nth-child(6').click()
     cy.get(selectorList.submitButton).eq(0).click()
     cy.get('body').should('contain', 'Successfully Updated')
     cy.get('.oxd-toast-close')
