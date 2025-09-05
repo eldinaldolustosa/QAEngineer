@@ -1,15 +1,19 @@
 import userData from '../fixtures/userData.json'
+import LoginPage from '../pages/loginPage'
 
+const lp = new LoginPage()
 
 describe('Orange HRM Login', () => {
 
 const selectorList = {
+  /* enviado para o elemento Page Object para reduzir o codigo e encapsular os elementos em suas paginas em forma de objetos
   usernameField:    '[name="username"]',
   passwordField:    '[name="password"]',
   loginButton:      '[type="submit"]',
+  credencialAlert:  '[role="alert"]',
+  */
   sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
   dashboardGrid:    '.orangehrm-dashboard-grid',
-  credencialAlert:  '[role="alert"]',
   myInfoButton:     '[href="/web/index.php/pim/viewMyDetails"]',
   firstNameField:   '[name="firstName"]',
   lasNameField:     '[name="lastName"]',
