@@ -6,12 +6,13 @@ class LoginPage{
             loginButton:      '[type="submit"]',
             credencialAlert:  '[role="alert"]'
         }
+        return selector
     }
     accessLoginPage(){
        cy.visit('/auth/login') //otimizado a URL basica do projeto no arquivo cypress.config.js que inicializa o Cypress
     }
 
-    loginWithUser(username, password){
+    loginWithAnyUser(username, password){
         cy.get(this.selectorList().usernameField).type(username)
         cy.get(this.selectorList().passwordField).type(password)
         cy.get(this.selectorList().loginButton).click()

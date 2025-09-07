@@ -1,7 +1,14 @@
 import userData from '../fixtures/userData.json'
-import LoginPage from '../pages/loginPage'
+import LoginPage from '../pages/loginPage.js'
+import DashboardPage from '../pages/dashboardPage.js'
+import MenuPage from '../pages/menuPage.js'
+import MyInfo from '../pages/myInfo.js'
 
-const lp = new LoginPage()
+
+const loginPage = new LoginPage()
+const dashboardPage = new DashboardPage()
+const menuPage = new MenuPage()
+const myInfo = new MyInfo()
 
 describe('Orange HRM Login', () => {
 
@@ -12,8 +19,8 @@ const selectorList = {
   loginButton:      '[type="submit"]',
   credencialAlert:  '[role="alert"]',
   */
-  sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
-  dashboardGrid:    '.orangehrm-dashboard-grid',
+  //sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
+  //dashboardGrid:    '.orangehrm-dashboard-grid',
   myInfoButton:     '[href="/web/index.php/pim/viewMyDetails"]',
   firstNameField:   '[name="firstName"]',
   lasNameField:     '[name="lastName"]',
@@ -40,16 +47,23 @@ const userData = {
 }
 */
   it.only('User Info Update - Success', () => {
-    cy.visit('/auth/login') //otimizado a URL basica do projeto no arquivo cypress.config.js que inicializa o Cypress
-    cy.get(selectorList.usernameField).type(userData.userSuccess.username)
+    loginPage.accessLoginPage()
+    loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
+    dashboardPage.checkDashboardPage()
+    menuPage.accessMyInfo()
+    myInfo.fillInfo()
+    /*cy.visit('/auth/login') //otimizado a URL basica do projeto no arquivo cypress.config.js que inicializa o Cypress
+    //cy.get(selectorList.usernameField).type(userData.userSuccess.username)
     cy.get(selectorList.passwordField).type(userData.userSuccess.password)
     cy.get(selectorList.loginButton).click()
+    */
     //verificar se a url esta posicionada na pagina principal
-    cy.location('pathname').should('equal','/web/index.php/dashboard/index')
+    //cy.location('pathname').should('equal','/web/index.php/dashboard/index')
     //alternativa de verificacao de posicionamento do cypress utilizando elemento da pagina principal
-    cy.get(selectorList.dashboardGrid)
-    cy.get(selectorList.myInfoButton).click()
-    cy.get(selectorList.firstNameField).clear().type('Eddie')
+    //cy.get(selectorList.dashboardGrid)
+    //cy.get(selectorList.myInfoButton).click()
+   
+    /*cy.get(selectorList.firstNameField).clear().type('Eddie')
     cy.get(selectorList.lasNameField).clear().type('Santos')
     cy.get(selectorList.genericField).eq(4).clear().type('IdEmployee')
     cy.get(selectorList.genericField).eq(5).clear().type('DLTeste')
@@ -65,7 +79,7 @@ const userData = {
     cy.get('.oxd-select-dropdown > :nth-child(6').click()
     cy.get(selectorList.submitButton).eq(0).click()
     cy.get('body').should('contain', 'Successfully Updated')
-    cy.get('.oxd-toast-close')
+    cy.get('.oxd-toast-close')*/
   })
   it('login - Fail', () => {
     cy.visit('/auth/login')
