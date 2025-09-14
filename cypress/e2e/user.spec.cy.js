@@ -1,91 +1,27 @@
 import userData from '../fixtures/userData.json'
-import LoginPage from '../pages/loginPage.js'
 import DashboardPage from '../pages/dashboardPage.js'
+import LoginPage from '../pages/loginPage.js'
 import MenuPage from '../pages/menuPage.js'
-import MyInfo from '../pages/myInfo.js'
+import MyInfoPage from '../pages/myInfoPage.js'
 
+const Chance = require('chance')
 
+const chance = new Chance()
 const loginPage = new LoginPage()
 const dashboardPage = new DashboardPage()
 const menuPage = new MenuPage()
-const myInfo = new MyInfo()
+const myInfo = new MyInfoPage()
 
 describe('Orange HRM Login', () => {
-
-const selectorList = {
-  /* enviado para o elemento Page Object para reduzir o codigo e encapsular os elementos em suas paginas em forma de objetos
-  usernameField:    '[name="username"]',
-  passwordField:    '[name="password"]',
-  loginButton:      '[type="submit"]',
-  credencialAlert:  '[role="alert"]',
-  */
-  //sectionTitle:     '.oxd-topbar-header-breadcrumb-module',
-  //dashboardGrid:    '.orangehrm-dashboard-grid',
-  myInfoButton:     '[href="/web/index.php/pim/viewMyDetails"]',
-  firstNameField:   '[name="firstName"]',
-  lasNameField:     '[name="lastName"]',
-  genericField:     '.oxd-input--active',
-  dataField:        '[placeholder="yyyy-mm-dd]',
-  dateCloseButton:  '.--close',
-  selectTextInput:  '.oxd-select-text-input',
-  radioGender:      '[type="radio"]',
-  submitButton:     '[type="submit"]',
-  genericComboBox:  '.oxd-select-text--arrow'
-
-}
-/*
-Tratamento Cypress Fixtures
-const userData = {
-  userSuccess:{
-    username: 'Admin',
-    password: 'admin123'
-  },
-  userFail:{
-    username: 'teste',
-    password: 'teste'
-  }
-}
-*/
-  it.only('User Info Update - Success', () => {
+  it('User Info Update - Success', () => {
     loginPage.accessLoginPage()
     loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
+
     dashboardPage.checkDashboardPage()
+    
     menuPage.accessMyInfo()
-    myInfo.fillInfo()
-    /*cy.visit('/auth/login') //otimizado a URL basica do projeto no arquivo cypress.config.js que inicializa o Cypress
-    //cy.get(selectorList.usernameField).type(userData.userSuccess.username)
-    cy.get(selectorList.passwordField).type(userData.userSuccess.password)
-    cy.get(selectorList.loginButton).click()
-    */
-    //verificar se a url esta posicionada na pagina principal
-    //cy.location('pathname').should('equal','/web/index.php/dashboard/index')
-    //alternativa de verificacao de posicionamento do cypress utilizando elemento da pagina principal
-    //cy.get(selectorList.dashboardGrid)
-    //cy.get(selectorList.myInfoButton).click()
-   
-    /*cy.get(selectorList.firstNameField).clear().type('Eddie')
-    cy.get(selectorList.lasNameField).clear().type('Santos')
-    cy.get(selectorList.genericField).eq(4).clear().type('IdEmployee')
-    cy.get(selectorList.genericField).eq(5).clear().type('DLTeste')
-    cy.get(selectorList.genericField).eq(7).clear().type('2025-01-09')
-    cy.get(selectorList.dateCloseButton).click()
-    //cy.get(selectorList.radioGender).eq(1).check()
-    cy.get(':nth-child(2) > :nth-child(2) > .oxd-radio-wrapper > label > .oxd-radio-input').click()
-    cy.get(selectorList.genericComboBox).eq(0).click({force: true})
-    cy.get('.oxd-select-dropdown > :nth-child(27)').click()
-    cy.get(selectorList.genericComboBox).eq(1).click({force: true})
-    cy.get('.oxd-select-dropdown > :nth-child(3').click()
-    cy.get(selectorList.genericComboBox).eq(2).click({force: true})
-    cy.get('.oxd-select-dropdown > :nth-child(6').click()
-    cy.get(selectorList.submitButton).eq(0).click()
-    cy.get('body').should('contain', 'Successfully Updated')
-    cy.get('.oxd-toast-close')*/
-  })
-  it('login - Fail', () => {
-    cy.visit('/auth/login')
-    cy.get(selectorList.usernameField).type(userData.userFail.username)
-    cy.get(selectorList.passwordField).type(userData.userFail.password)
-    cy.get(selectorList.loginButton).click()
-    cy.get(selectorList.credencialAlert)
+    myInfo.fillPersonalDetails(chance.first(), chance.last(), chance.string(),'DL123456', '1978-10-01')
+    myInfo.fillVisaInfo()
+    myInfo.saveForm()
   })
 })
